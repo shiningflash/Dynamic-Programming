@@ -20,5 +20,5 @@ int main() {
         for (int i = 1; i <= n; scanf("%d", &a[i]), i++);
         for (int i = 1; i <= m; scanf("%d", &b[i]), i++);
         printf("Twin Towers #%d\nNumber of Tiles : %d\n\n", ++t, noTiles());
-    }
+    } 
 }
