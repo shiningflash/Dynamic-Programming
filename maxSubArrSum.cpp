@@ -1,3 +1,4 @@
+
 // kadane algorithm :: TC - O(N)
 // @author :: Amirul Islam 
 
@@ -17,7 +18,7 @@ int maxSubArrSum_withStartEnd(int a[], int sz) {
     int cur_max = 0, global_max = INT_MIN, start(0), end(0), s(0);
     for (int i = 0; i < sz; i++) {
         cur_max = cur_max + a[i];
-        if (global_max < cur_max + a[i]) global_max = cur_max, start = s, end = i;
+        if (global_max < cur_max) global_max = cur_max, start = s, end = i;
         if (cur_max < 0) cur_max = 0, s = i + 1;
     }
     printf("\nMax Sub Array Sum = %d\nStart = %d\tEnd = %d\n", global_max, start, end);
