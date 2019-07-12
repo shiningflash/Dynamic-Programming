@@ -7,7 +7,7 @@ using namespace std;
 
 int maxSubArrSum(int a[], int sz) {
     int cur_max = a[0], global_max = a[0];
-    for (int i = 0; i < sz; i++) {
+    for (int i = 1; i < sz; i++) {
         cur_max = max(a[i], cur_max + a[i]);
         global_max = max(global_max, cur_max);
     }
