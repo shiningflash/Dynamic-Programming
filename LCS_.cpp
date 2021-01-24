@@ -1,102 +1,81 @@
-/*************************************
+/*                 _
+ *  _|_ o._ o._  __|_| _. _|_
+ * _>| ||| ||| |(_|| |(_|_>| |
+ *               _|
+ * @author Amirul islam Al Mamun
  * An Easy LCS LightOJ - 1110 >> DP
- * @author Amirul Islam (shiningflash)
- ************************************/
+ */
 
-#include <cstdio>
-#include <iomanip>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <cctype>
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <queue>
-#include <map>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
-#define mem(x,y) memset(x,y,sizeof(x))
-#define CLEAR(x) memset(x,0,sizeof(x))
-
-#define pb push_back
-#define Sort(v) sort(v.begin(),v.end())
-#define _sort(s, n) sort(s, s+n)
-#define sqr(x) ((x)*(x))
-
-#define le 50001
-#define ERR 1e-9
-#define pi (2*acos(0))
-#define PI 3.141592653589793
-
-#define scanint(a) scanf("%d",&a)
-#define scanLLD(a) scanf("%lld",&a)
-
-typedef unsigned long long ll;
+#include <bits/stdc++.h>
 using namespace std;
 
-/**********************End*******************/
+const int mx = 1e3;
 
-string s1, s2;
-int cost[105][105], path[105][105], lcs[105];
-int t, l1, l2, lcs_len;
+int path[mx][mx], cost[mx][mx];
 
-inline void LCS_LENGTH() {
-    for (int i = 1; i <= l1; cost[i][0] = 0, i++);
-    for (int j = 1; j <= l2; cost[0][j] = 0, j++);
-
-    for (int i = 1; i <= l1; i++) {
-        for (int j = 1; j <= l2; j++) {
+int lcs(string s1, string s2) {
+    for (int i = 1; i <= s1.length(); i++) {
+        for (int j = 1; j <= s2.length(); j++) {
+            // common word
             if (s1[i-1] == s2[j-1]) {
                 cost[i][j] = cost[i-1][j-1] + 1;
                 path[i][j] = 1;
             }
+            // UP greater
             else if (cost[i-1][j] >= cost[i][j-1]) {
                 cost[i][j] = cost[i-1][j];
                 path[i][j] = 2;
             }
+            // LEFT greater
             else {
                 cost[i][j] = cost[i][j-1];
                 path[i][j] = 3;
             }
         }
     }
-    lcs_len = cost[l1][l2];
+    return cost[s1.length()][s2.length()];
 }
 
-inline void LCS() {
-    int i = l1, j = l2, k = lcs_len-1;
-    while (k >= 0) {
-        if (path[i][j] == 1) {
-            lcs[k] = s1[i-1];
-            i--; j--; k--;
-        }
-        else if (path[i][j] == 2) i--;
-        else if (path[i][j] == 3) j--;
+string get_lcs_string(string s1, string s2, int lcs_len) {
+    // no common substring
+    if (lcs_len == 0) {
+        return ":(";
     }
-}
 
-inline void LCS_PRINT() {
-    if (lcs_len <= 0) cout << ":(";
-    else
-        for (int i = 0; i < lcs_len; i++)
-            cout << (char) lcs[i];
-    cout << endl;
+    int i = s1.length();
+    int j = s2.length();
+    int k = lcs_len;
+
+    stack <char> st;
+    
+    while (k > 0) {
+        if (path[i][j] == 1) {
+            st.push(s1[i-1]);
+            i--;
+            j--;
+            k--;
+        }
+        else if (path[i][j] == 2) {
+            i--;
+        }
+        else {
+            j--;
+        }
+    }
+
+    string lcs_str = "";
+    while (!st.empty()) {
+        lcs_str.push_back((char) st.top());
+        st.pop();
+    }
+
+    return lcs_str;
 }
 
 int main() {
-    scanint(t);
-    for (int i = 1; i <= t; i++) {
-        cin >> s1 >> s2;
-        l1 = s1.length(); l2 = s2.length();
-        LCS_LENGTH();
-        LCS();
-        cout << "Case " << i << ": ";
-        LCS_PRINT();
-    }
+    string s1, s2;
+    cin >> s1 >> s2;
+    int lcs_len = lcs(s1, s2);
+    cout << get_lcs_string(s1, s2, lcs_len) << endl;
+    return 0;
 }
