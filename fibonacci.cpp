@@ -1,27 +1,36 @@
-// memomizing (top down) method
-
 #include <bits/stdc++.h>
 using namespace std;
+#define ll long long int
 
-#define nil -1
-#define le 100
+const int mx = 40;
 
-typedef long long ll;
+ll fib[mx];
 
-int lookup[le];
+void fibonacci() {
+    fib[0] = 0;
+    fib[1] = 1;
 
-ll fib(int n) {
-    if (lookup[n] == nil) {
-        if (n <= 1) lookup[n] = n;
-        else lookup[n] = fib(n-1) + fib(n-2);
+    for (int i = 2; i <= mx; i++) {
+        fib[i] = fib[i-1] + fib[i-2];
     }
-    return lookup[n];
+}
+
+void print_series() {
+    for (int i = 0; i < mx; i++) {
+        cout << fib[i] << " ";
+    }
+    cout << "\n";
 }
 
 int main() {
-    int n; cin >> n;
-    for (int i = 0; i <= n; lookup[i] = nil, i++);
-    ll ans = fib(n);
-    cout << ans << endl;
+    fibonacci();
+    print_series();
+
     return 0;
 }
+
+/*
+Output
+-
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 ....
+*/
