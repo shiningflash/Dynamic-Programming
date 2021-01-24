@@ -3,65 +3,46 @@
  * @author Amirul Islam (shiningflash) >> DP O(n)
  *************************************************/
 
-#include <cstdio>
-#include <iomanip>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <cctype>
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <queue>
-#include <map>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
-/**Define memory set function**/
-#define mem(x,y) memset(x,y,sizeof(x))
-#define CLEAR(x) memset(x,0,sizeof(x))
-
-/**Define function and object**/
-#define pb push_back
-#define Sort(v) sort(v.begin(),v.end())
-#define _sort(s, n) sort(s, s+n)
-#define sqr(x) ((x)*(x))
-
-/**Define constant value**/
-#define le 9999999
-#define ERR 1e-9
-#define pi (2*acos(0))
-#define PI 3.141592653589793
-
-/**Define input**/
-#define scanint(a) scanf("%d", &a)
-#define scanint2(a, b) scanf("%d %d", &a, &b)
-#define scanLLD(a) scanf("%llu", &a)
-
-typedef long long ll;
-
+#include <bits/stdc++.h>
 using namespace std;
 
-/**********************End*******************/
+const int mx = 1e3;
 
-int n, m;
+int coin[mx], dp[mx];
+
+int coin_change_way(int unit, int type) {
+    dp[0] = 1;
+    for (int i = 0; i < type; i++) {
+        for (int j = coin[i]; j <= unit; j++) {
+            dp[j] += dp[j - coin[i]];
+        }
+    }
+    return dp[unit];
+}
 
 int main() {
-    scanint2(n, m);
-    int* a = new int[m];
-    long* dp = new long[n+1];
-    dp[0] = 1;
+    // freopen("in", "r", stdin);
 
-    for (int i = 0; i < m; scanint(a[i]), i++);
-
-    for (int i = 0; i < m; i++)
-        for (int j = a[i]; j <= n; j++)
-            dp[j] += dp[j-a[i]];
-
-    cout << dp[n] << endl;
+    int unit, type;
+    cin >> unit >> type;
+    for (int i = 0; i < type; i++) {
+        cin >> coin[i];
+    }
+    cout << coin_change_way(unit, type) << endl;
     return 0;
 }
+
+/*
+Input:
+4 3
+1 2 3
+
+Output:
+4
+
+Explanation
+{1, 1, 1, 1}
+{1, 1, 2}
+{2, 2}
+{1, 3}
+*/
